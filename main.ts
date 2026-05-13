@@ -136,6 +136,18 @@ function TXEMODE() {
 
 
 function txSend() {
+    radio.setTransmitPower(7)
+
+    if (MODE == "TX") {
+        radio.setGroup(1)
+        radio.sendString(txt)
+        txt = ""
+    }
+    if (MODE == "TXE") {
+        radio.setGroup(255)
+        radio.sendString(digit)
+        digit = ""
+    }
     
 }
 
@@ -149,6 +161,13 @@ input.onButtonPressed(Button.AB, function () {
     }
     if (AppendMorse == TXn) {
         MODE = "TX"
+        showString(MODE)
+        AppendMorse = ""
+        digit = ""
+        txt = ""
+    }
+    if (AppendMorse == RXn) {
+        MODE = "RX"
         showString(MODE)
         AppendMorse = ""
         digit = ""
@@ -169,7 +188,7 @@ input.onButtonPressed(Button.B, function () {
 
 
 input.onGesture(Gesture.Shake, function () {
-    
+    txSend()
 })
 
 
@@ -207,6 +226,8 @@ let TXEn = ""
 let TXn = ""
 let MODE = ""
 let digit = ""
+
+let RXn = "000000"
 
 MODE = "TX"
 TXn = "1111"
