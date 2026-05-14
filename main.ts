@@ -1,3 +1,277 @@
+let txt = ""
+let AppendMorse = ""
+let Z = ""
+let Y = ""
+let X = ""
+let W = ""
+let V = ""
+let U = ""
+let T = ""
+let S = ""
+let R = ""
+let Q = ""
+let P = ""
+let O = ""
+let N = ""
+let M = ""
+let L = ""
+let K = ""
+let J = ""
+let I = ""
+let H = ""
+let G = ""
+let F = ""
+let E = ""
+let D = ""
+let C = ""
+let B = ""
+let A = ""
+
+
+let TXEn = ""
+let TXn = ""
+let MODE = ""
+let digit = ""
+
+let RXn = "000000"
+let EXn = "101010"
+let TXGn = "111111"
+let GXn = "010101"
+
+MODE = "TX"
+TXn = "1111"
+TXEn = "11111"
+
+let channel = "01"
+let chAll = "00"
+let chRESPONSE = 128
+let rHeader = 1
+
+let rTemp = false
+let rHeading = false
+
+A = "0"
+B = "1"
+C = "00"
+D = "01"
+E = "10"
+F = "11"
+G = "000"
+H = "001"
+I = "010"
+J = "011"
+K = "100"
+L = "101"
+M = "110"
+N = "111"
+O = "0000"
+P = "0001"
+Q = "0010"
+R = "0011"
+S = "0100"
+T = "0101"
+U = "0110"
+V = "0111"
+W = "1000"
+X = "1001"
+Y = "1010"
+Z = "1011"
+
+let n00 = "00000"
+let n01 = "00001"
+let n02 = "00010"
+let n03 = "00011"
+let n04 = "00100"
+let n05 = "00101"
+let n06 = "00110"
+let n07 = "00111"
+let n08 = "01000"
+let n09 = "01001"
+let n10 = "01010"
+let n11 = "01011"
+let n12 = "01100"
+let n13 = "01101"
+let n14 = "01110"
+let n15 = "01111"
+let n16 = "10000"
+let n17 = "10001"
+let n18 = "10010"
+let n19 = "10011"
+let n20 = "10100"
+let n21 = "10101"
+let n22 = "10110"
+let n23 = "10111"
+let n24 = "11000"
+let n25 = "11001"
+let n26 = "11010"
+let n27 = "11011"
+let n28 = "11100"
+let n29 = "11101"
+let n30 = "11110"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+enum PacketType {
+    GET_PAGE = 10,
+    SEND_INPUT = 20,
+    RENDER_FRAME = 30,
+    GAME_OVER = 40
+}
+
+let snake: number[] = [12] 
+let direction = 1          // 0:U, 1:R, 2:D, 3:L
+let food = 0
+let gameActive = false
+let browserID = 0     
+
+function moveSnake() {
+    let head = snake[0]
+    let headX = Math.floor(head / 5)
+    let headY = head % 5
+
+    if (direction == 0) headY--
+    else if (direction == 1) headX++
+    else if (direction == 2) headY++
+    else if (direction == 3) headX--
+
+    // Wall Collision
+    if (headX < 0 || headX > 4 || headY < 0 || headY > 4) {
+        endGame()
+        return
+    }
+
+    let newHead = (headX * 5) + headY
+
+    // Self Collision
+    if (snake.indexOf(newHead) >= 0) {
+        endGame()
+        return
+    }
+
+    snake.unshift(newHead)
+
+    if (newHead == food) {
+        createFood()
+    } else {
+        snake.pop()
+    }
+}
+
+function createFood() {
+    food = randint(0, 24)
+    while (snake.indexOf(food) >= 0) {
+        food = randint(0, 24)
+    }
+}
+
+function endGame() {
+    gameActive = false
+    radio.sendValue("type", PacketType.GAME_OVER)
+}
+
+function broadcastScreen() {
+    let screenMap = 0
+    // Pack snake into bits
+    for (let bodyPart of snake) {
+        screenMap |= (1 << bodyPart)
+    }
+    // Pack food into bits
+    screenMap |= (1 << food)
+    radio.sendValue("render", screenMap)
+}
+
+radio.onReceivedValue(function (name, value) {
+    // --- HOST LOGIC (TXG) ---
+    if (MODE == "TXG") {
+        if (name == "cmd" && value == PacketType.GET_PAGE) {
+            browserID = radio.receivedPacket(RadioPacketProperty.SerialNumber)
+            snake = [12]
+            direction = 1
+            createFood()
+            gameActive = true
+        }
+
+        if (name == "input" && gameActive) {
+            // Prevent 180-degree suicide turns
+            if (Math.abs(direction - value) != 2) {
+                direction = value
+            }
+        }
+    }
+
+    // --- CLIENT LOGIC (GX) ---
+    if (MODE == "GX") {
+        if (name == "render") {
+            basic.clearScreen()
+            gameActive = true
+            // Unpack the 25-bit screenMap
+            for (let i = 0; i < 25; i++) {
+                if ((value >> i) & 1) {
+                    led.plot(Math.floor(i / 5), i % 5)
+                }
+            }
+        }
+
+        if (name == "type" && value == PacketType.GAME_OVER) {
+            gameActive = false
+            basic.showIcon(IconNames.Skull)
+        }
+    }
+})
+
+
+input.onGesture(Gesture.LogoDown, function () {
+    if (MODE == "GX" && gameActive) {
+        radio.sendValue("input", 0)
+    }
+})
+
+input.onGesture(Gesture.TiltRight, function () {
+    if (MODE == "GX" && gameActive) {
+        radio.sendValue("input", 1)
+    }
+})
+
+input.onGesture(Gesture.LogoUp, function () {
+    if (MODE == "GX" && gameActive) {
+        radio.sendValue("input", 2)
+    }
+})
+
+input.onGesture(Gesture.TiltLeft, function () {
+    if (MODE == "GX" && gameActive) {
+        radio.sendValue("input", 3)
+    }
+})
+
+input.onGesture(Gesture.Shake, function () {
+    if (MODE == "GX") {
+        radio.sendValue("cmd", PacketType.GET_PAGE)
+        // Reset local state for a new game
+        gameActive = true
+        basic.clearScreen()
+    }
+})
+
+
+
+
+
 input.onButtonPressed(Button.A, function () {
     AppendMorse = "" + AppendMorse + "1"
 })
@@ -330,6 +604,14 @@ input.onButtonPressed(Button.AB, function () {
         txt = ""
         radio.setGroup(64)
     }
+    if (AppendMorse == GXn) {
+        MODE = "GX"
+        showString(MODE)
+        AppendMorse = ""
+        digit = ""
+        txt = ""
+        radio.setGroup(64)
+    }
 
     TXMODE()
     TXEMODE()
@@ -347,6 +629,10 @@ input.onButtonPressed(Button.B, function () {
 
 input.onGesture(Gesture.Shake, function () {
     txSend()
+    if (MODE == "GX") {
+        radio.sendValue("cmd", PacketType.GET_PAGE)
+    }
+
 })
 
 
@@ -379,114 +665,20 @@ radio.onReceivedNumber(function(receivedNumber: number){
     
 })
 
-let txt = ""
-let AppendMorse = ""
-let Z = ""
-let Y = ""
-let X = ""
-let W = ""
-let V = ""
-let U = ""
-let T = ""
-let S = ""
-let R = ""
-let Q = ""
-let P = ""
-let O = ""
-let N = ""
-let M = ""
-let L = ""
-let K = ""
-let J = ""
-let I = ""
-let H = ""
-let G = ""
-let F = ""
-let E = ""
-let D = ""
-let C = ""
-let B = ""
-let A = ""
 
-
-let TXEn = ""
-let TXn = ""
-let MODE = ""
-let digit = ""
-
-let RXn = "000000"
-let EXn = "101010"
-let TXGn = "111111"
-
-MODE = "TX"
-TXn = "1111"
-TXEn = "11111"
-
-let channel = "01"
-let chAll = "00"
-let chRESPONSE = 128
-let rHeader = 1
-
-let rTemp = false
-let rHeading = false
-
-A = "0"
-B = "1"
-C = "00"
-D = "01"
-E = "10"
-F = "11"
-G = "000"
-H = "001"
-I = "010"
-J = "011"
-K = "100"
-L = "101"
-M = "110"
-N = "111"
-O = "0000"
-P = "0001"
-Q = "0010"
-R = "0011"
-S = "0100"
-T = "0101"
-U = "0110"
-V = "0111"
-W = "1000"
-X = "1001"
-Y = "1010"
-Z = "1011"
-
-let n00 = "00000"
-let n01 = "00001"
-let n02 = "00010"
-let n03 = "00011"
-let n04 = "00100"
-let n05 = "00101"
-let n06 = "00110"
-let n07 = "00111"
-let n08 = "01000"
-let n09 = "01001"
-let n10 = "01010"
-let n11 = "01011"
-let n12 = "01100"
-let n13 = "01101"
-let n14 = "01110"
-let n15 = "01111"
-let n16 = "10000"
-let n17 = "10001"
-let n18 = "10010"
-let n19 = "10011"
-let n20 = "10100"
-let n21 = "10101"
-let n22 = "10110"
-let n23 = "10111"
-let n24 = "11000"
-let n25 = "11001"
-let n26 = "11010"
-let n27 = "11011"
-let n28 = "11100"
-let n29 = "11101"
-let n30 = "11110"
 
 showString(MODE)
+
+
+
+basic.forever(function () {
+    if (MODE == "TXG") {
+        if (gameActive) {
+            moveSnake()
+            if (gameActive) {
+                broadcastScreen()
+            }
+            basic.pause(1000) //Contol Game speed for future update using buttons
+        }
+    }
+})
