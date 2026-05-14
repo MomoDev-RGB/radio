@@ -210,10 +210,11 @@ function EXMODE() {
 }   
 
 function checkMark(repeat: number) {
-    for (let i = 0; i < repeat + 1; i++) {
+    for (let i = 0; i < repeat; i++) {
         basic.showIcon(IconNames.Yes)
         basic.pause(250)
         basic.clearScreen()
+        basic.pause(250)
         
     }
     
@@ -233,6 +234,10 @@ function txSend() {
         if (digit.slice(2, 4) == "02") {
             radio.setGroup(chRESPONSE)
             rTemp = true
+        }
+        if (digit.slice(2, 4) == "03") {
+            radio.setGroup(chRESPONSE)
+            rHeading = true
         }
         radio.setGroup(chRESPONSE)
         digit = ""
@@ -266,6 +271,13 @@ function parseEX(cmd: string) {
             if (command == "02") {
                 let temperature = input.temperature()
                 rCOMM(temperature)
+                rTemp = true
+            }
+
+            if (command == "03") {
+                let heading = input.compassHeading()
+                rCOMM(heading)
+                rHeading = true
             }
         }
     }
@@ -340,12 +352,16 @@ radio.onReceivedNumber(function(receivedNumber: number){
     if (MODE == "TXE") {
         if (rTemp) {
             showString("TEMP IS " + receivedNumber.toString())
-            radio.setGroup(255)
             rTemp = false
         }
         if (receivedNumber == rHeader) {
             checkMark(3)
         }
+        if (rHeading) {
+            showString("HEADING: " + receivedNumber.toString())
+            rHeading = false
+        }
+        radio.setGroup(255)
     }
     
 })
@@ -398,6 +414,7 @@ let chRESPONSE = 128
 let rHeader = 1
 
 let rTemp = false
+let rHeading = false
 
 A = "0"
 B = "1"
