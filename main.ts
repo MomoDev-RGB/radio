@@ -279,6 +279,10 @@ function parseEX(cmd: string) {
                 rCOMM(heading)
                 rHeading = true
             }
+            if (command == "04") {
+                music.ringTone(500)
+                rCOMM(rHeader)
+            }
         }
     }
 }
@@ -318,6 +322,15 @@ input.onButtonPressed(Button.AB, function () {
         radio.setGroup(255)
     }
     
+    if (AppendMorse == TXGn) {
+        MODE = "TXG"
+        showString(MODE)
+        AppendMorse = ""
+        digit = ""
+        txt = ""
+        radio.setGroup(64)
+    }
+
     TXMODE()
     TXEMODE()
     EXMODE()
@@ -403,6 +416,7 @@ let digit = ""
 
 let RXn = "000000"
 let EXn = "101010"
+let TXGn = "111111"
 
 MODE = "TX"
 TXn = "1111"
