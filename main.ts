@@ -134,6 +134,90 @@ function TXEMODE() {
     }
 }
 
+function rCOMM(id: number) {
+    radio.setGroup(chRESPONSE)
+    radio.sendNumber(id)
+    radio.setGroup(255)
+}
+
+function EXMODE() {
+    if (MODE == "EX") {
+
+        if (AppendMorse == n01) {
+            channel = "01"
+        } else if (AppendMorse == n02) {
+            channel = "02"
+        } else if (AppendMorse == n03) {
+            channel = "03"
+        } else if (AppendMorse == n04) {
+            channel = "04"
+        } else if (AppendMorse == n05) {
+            channel = "05"
+        } else if (AppendMorse == n06) {
+            channel = "06"
+        } else if (AppendMorse == n07) {
+            channel = "07"
+        } else if (AppendMorse == n08) {
+            channel = "08"
+        } else if (AppendMorse == n09) {
+            channel = "09"
+        } else if (AppendMorse == n10) {
+            channel = "10"
+        } else if (AppendMorse == n11) {
+            channel = "11"
+        } else if (AppendMorse == n12) {
+            channel = "12"
+        } else if (AppendMorse == n13) {
+            channel = "13"
+        } else if (AppendMorse == n14) {
+            channel = "14"
+        } else if (AppendMorse == n15) {
+            channel = "15"
+        } else if (AppendMorse == n16) {
+            channel = "16"
+        } else if (AppendMorse == n17) {
+            channel = "17"
+        } else if (AppendMorse == n18) {
+            channel = "18"
+        } else if (AppendMorse == n19) {
+            channel = "19"
+        } else if (AppendMorse == n20) {
+            channel = "20"
+        } else if (AppendMorse == n21) {
+            channel = "21"
+        } else if (AppendMorse == n22) {
+            channel = "22"
+        } else if (AppendMorse == n23) {
+            channel = "23"
+        } else if (AppendMorse == n24) {
+            channel = "24"
+        } else if (AppendMorse == n25) {
+            channel = "25"
+        } else if (AppendMorse == n26) {
+            channel = "26"
+        } else if (AppendMorse == n27) {
+            channel = "27"
+        } else if (AppendMorse == n28) {
+            channel = "28"
+        } else if (AppendMorse == n29) {
+            channel = "29"
+        } else if (AppendMorse == n30) {
+            channel = "30"
+        }
+        showString(channel)
+    }
+    
+}   
+
+function checkMark(repeat: number) {
+    for (let i = 0; i < repeat + 1; i++) {
+        basic.showIcon(IconNames.Yes)
+        basic.pause(250)
+        basic.clearScreen()
+        
+    }
+    
+}
 
 function txSend() {
     radio.setTransmitPower(7)
@@ -146,6 +230,11 @@ function txSend() {
     if (MODE == "TXE") {
         radio.setGroup(255)
         radio.sendString(digit)
+        if (digit.slice(2, 4) == "02") {
+            radio.setGroup(chRESPONSE)
+            rTemp = true
+        }
+        radio.setGroup(chRESPONSE)
         digit = ""
     }
     
@@ -153,7 +242,32 @@ function txSend() {
 
 function parseEX(cmd: string) {
     if (cmd.length == 6) {
+        let header = cmd.slice(0, 2)
+        let command = cmd.slice(2, 4)
+        let time = cmd.slice(4, 6)
+        if (header == channel || header == chAll) {
+            if (command == "01") {
 
+                rCOMM(rHeader)
+                let timer = parseInt(time) * 1000
+                let elapsed = 0
+
+                while (elapsed < timer) {
+                    led.plotAll()
+                    basic.pause(250)
+
+                    basic.clearScreen()
+                    basic.pause(250)
+
+                    elapsed += 500
+                }
+            }
+
+            if (command == "02") {
+                let temperature = input.temperature()
+                rCOMM(temperature)
+            }
+        }
     }
 }
 
@@ -180,6 +294,7 @@ input.onButtonPressed(Button.AB, function () {
         AppendMorse = ""
         digit = ""
         txt = ""
+        radio.setGroup(1)
     }
 
     if (AppendMorse == EXn) {
@@ -188,10 +303,12 @@ input.onButtonPressed(Button.AB, function () {
         AppendMorse = ""
         digit = ""
         txt = ""
+        radio.setGroup(255)
     }
     
     TXMODE()
     TXEMODE()
+    EXMODE()
 
     AppendMorse = ""
 
@@ -210,15 +327,28 @@ input.onGesture(Gesture.Shake, function () {
 
 radio.onReceivedString(function(receivedString: string) {
     if (MODE == "RX") {
-        radio.setGroup(1)
+        
         showString(receivedString)
     }
     if (MODE == "EX") {
-        radio.setGroup(255)
+        
+        parseEX(receivedString)
     }
 })
 
-
+radio.onReceivedNumber(function(receivedNumber: number){
+    if (MODE == "TXE") {
+        if (rTemp) {
+            showString("TEMP IS " + receivedNumber.toString())
+            radio.setGroup(255)
+            rTemp = false
+        }
+        if (receivedNumber == rHeader) {
+            checkMark(3)
+        }
+    }
+    
+})
 
 let txt = ""
 let AppendMorse = ""
@@ -261,6 +391,14 @@ let EXn = "101010"
 MODE = "TX"
 TXn = "1111"
 TXEn = "11111"
+
+let channel = "01"
+let chAll = "00"
+let chRESPONSE = 128
+let rHeader = 1
+
+let rTemp = false
+
 A = "0"
 B = "1"
 C = "00"
