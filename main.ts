@@ -284,129 +284,76 @@ function showString (str: string) {
 
 function TXMODE() {
     if (MODE == "TX") {
-        if (AppendMorse == A) {
-            txt = "" + txt + "A"
-        } else if (AppendMorse == B) {
-            txt = "" + txt + "B"
-        } else if (AppendMorse == C) {
-            txt = "" + txt + "C"
-        } else if (AppendMorse == D) {
-            txt = "" + txt + "D"
-        } else if (AppendMorse == E) {
-            txt = "" + txt + "E"
-        } else if (AppendMorse == F) {
-            txt = "" + txt + "F"
-        } else if (AppendMorse == G) {
-            txt = "" + txt + "G"
-        } else if (AppendMorse == H) {
-            txt = "" + txt + "H"
-        } else if (AppendMorse == I) {
-            txt = "" + txt + "I"
-        } else if (AppendMorse == J) {
-            txt = "" + txt + "J"
-        } else if (AppendMorse == K) {
-            txt = "" + txt + "K"
-        } else if (AppendMorse == L) {
-            txt = "" + txt + "L"
-        } else if (AppendMorse == M) {
-            txt = "" + txt + "M"
-        } else if (AppendMorse == N) {
-            txt = "" + txt + "N"
-        } else if (AppendMorse == O) {
-            txt = "" + txt + "O"
-        } else if (AppendMorse == P) {
-            txt = "" + txt + "P"
-        } else if (AppendMorse == Q) {
-            txt = "" + txt + "Q"
-        } else if (AppendMorse == R) {
-            txt = "" + txt + "R"
-        } else if (AppendMorse == S) {
-            txt = "" + txt + "S"
-        } else if (AppendMorse == T) {
-            txt = "" + txt + "T"
-        } else if (AppendMorse == U) {
-            txt = "" + txt + "U"
-        } else if (AppendMorse == V) {
-            txt = "" + txt + "V"
-        } else if (AppendMorse == W) {
-            txt = "" + txt + "W"
-        } else if (AppendMorse == X) {
-            txt = "" + txt + "X"
-        } else if (AppendMorse == Y) {
-            txt = "" + txt + "Y"
-        } else if (AppendMorse == Z) {
-            txt = "" + txt + "Z"
+        switch (AppendMorse) {
+            case A: txt = "" + txt + "A"; break;
+            case B: txt = "" + txt + "B"; break;
+            case C: txt = "" + txt + "C"; break;
+            case D: txt = "" + txt + "D"; break;
+            case E: txt = "" + txt + "E"; break;
+            case F: txt = "" + txt + "F"; break;
+            case G: txt = "" + txt + "G"; break;
+            case H: txt = "" + txt + "H"; break;
+            case I: txt = "" + txt + "I"; break;
+            case J: txt = "" + txt + "J"; break;
+            case K: txt = "" + txt + "K"; break;
+            case L: txt = "" + txt + "L"; break;
+            case M: txt = "" + txt + "M"; break;
+            case N: txt = "" + txt + "N"; break;
+            case O: txt = "" + txt + "O"; break;
+            case P: txt = "" + txt + "P"; break;
+            case Q: txt = "" + txt + "Q"; break;
+            case R: txt = "" + txt + "R"; break;
+            case S: txt = "" + txt + "S"; break;
+            case T: txt = "" + txt + "T"; break;
+            case U: txt = "" + txt + "U"; break;
+            case V: txt = "" + txt + "V"; break;
+            case W: txt = "" + txt + "W"; break;
+            case X: txt = "" + txt + "X"; break;
+            case Y: txt = "" + txt + "Y"; break;
+            case Z: txt = "" + txt + "Z"; break;
         }
     }
 }
 
 function TXEMODE() {
     if (MODE == "TXE") {
-        if (AppendMorse == n00) {
-            digit = "" + digit + "00"
-        } else if (AppendMorse == n01) {
-            digit = "" + digit + "01"
-        } else if (AppendMorse == n02) {
-            digit = "" + digit + "02"
-        } else if (AppendMorse == n03) {
-            digit = "" + digit + "03"
-        } else if (AppendMorse == n04) {
-            digit = "" + digit + "04"
-        } else if (AppendMorse == n05) {
-            digit = "" + digit + "05"
-        } else if (AppendMorse == n06) {
-            digit = "" + digit + "06"
-        } else if (AppendMorse == n07) {
-            digit = "" + digit + "07"
-        } else if (AppendMorse == n08) {
-            digit = "" + digit + "08"
-        } else if (AppendMorse == n09) {
-            digit = "" + digit + "09"
-        } else if (AppendMorse == n10) {
-            digit = "" + digit + "10"
-        } else if (AppendMorse == n11) {
-            digit = "" + digit + "11"
-        } else if (AppendMorse == n12) {
-            digit = "" + digit + "12"
-        } else if (AppendMorse == n13) {
-            digit = "" + digit + "13"
-        } else if (AppendMorse == n14) {
-            digit = "" + digit + "14"
-        } else if (AppendMorse == n15) {
-            digit = "" + digit + "15"
-        } else if (AppendMorse == n16) {
-            digit = "" + digit + "16"
-        } else if (AppendMorse == n17) {
-            digit = "" + digit + "17"
-        } else if (AppendMorse == n18) {
-            digit = "" + digit + "18"
-        } else if (AppendMorse == n19) {
-            digit = "" + digit + "19"
-        } else if (AppendMorse == n20) {
-            digit = "" + digit + "20"
-        } else if (AppendMorse == n21) {
-            digit = "" + digit + "21"
-        } else if (AppendMorse == n22) {
-            digit = "" + digit + "22"
-        } else if (AppendMorse == n23) {
-            digit = "" + digit + "23"
-        } else if (AppendMorse == n24) {
-            digit = "" + digit + "24"
-        } else if (AppendMorse == n25) {
-            digit = "" + digit + "25"
-        } else if (AppendMorse == n26) {
-            digit = "" + digit + "26"
-        } else if (AppendMorse == n27) {
-            digit = "" + digit + "27"
-        } else if (AppendMorse == n28) {
-            digit = "" + digit + "28"
-        } else if (AppendMorse == n29) {
-            digit = "" + digit + "29"
-        } else if (AppendMorse == n30) {
-            digit = "" + digit + "30"
+        switch (AppendMorse) {
+            case n00: digit = "" + digit + "00"; break;
+            case n01: digit = "" + digit + "01"; break;
+            case n02: digit = "" + digit + "02"; break;
+            case n03: digit = "" + digit + "03"; break;
+            case n04: digit = "" + digit + "04"; break;
+            case n05: digit = "" + digit + "05"; break;
+            case n06: digit = "" + digit + "06"; break;
+            case n07: digit = "" + digit + "07"; break;
+            case n08: digit = "" + digit + "08"; break;
+            case n09: digit = "" + digit + "09"; break;
+            case n10: digit = "" + digit + "10"; break;
+            case n11: digit = "" + digit + "11"; break;
+            case n12: digit = "" + digit + "12"; break;
+            case n13: digit = "" + digit + "13"; break;
+            case n14: digit = "" + digit + "14"; break;
+            case n15: digit = "" + digit + "15"; break;
+            case n16: digit = "" + digit + "16"; break;
+            case n17: digit = "" + digit + "17"; break;
+            case n18: digit = "" + digit + "18"; break;
+            case n19: digit = "" + digit + "19"; break;
+            case n20: digit = "" + digit + "20"; break;
+            case n21: digit = "" + digit + "21"; break;
+            case n22: digit = "" + digit + "22"; break;
+            case n23: digit = "" + digit + "23"; break;
+            case n24: digit = "" + digit + "24"; break;
+            case n25: digit = "" + digit + "25"; break;
+            case n26: digit = "" + digit + "26"; break;
+            case n27: digit = "" + digit + "27"; break;
+            case n28: digit = "" + digit + "28"; break;
+            case n29: digit = "" + digit + "29"; break;
+            case n30: digit = "" + digit + "30"; break;
         }
     }
 }
+
+
 
 function rCOMM(id: number) {
     radio.setGroup(chRESPONSE)
@@ -416,72 +363,41 @@ function rCOMM(id: number) {
 
 function EXMODE() {
     if (MODE == "EX") {
-
-        if (AppendMorse == n01) {
-            channel = "01"
-        } else if (AppendMorse == n02) {
-            channel = "02"
-        } else if (AppendMorse == n03) {
-            channel = "03"
-        } else if (AppendMorse == n04) {
-            channel = "04"
-        } else if (AppendMorse == n05) {
-            channel = "05"
-        } else if (AppendMorse == n06) {
-            channel = "06"
-        } else if (AppendMorse == n07) {
-            channel = "07"
-        } else if (AppendMorse == n08) {
-            channel = "08"
-        } else if (AppendMorse == n09) {
-            channel = "09"
-        } else if (AppendMorse == n10) {
-            channel = "10"
-        } else if (AppendMorse == n11) {
-            channel = "11"
-        } else if (AppendMorse == n12) {
-            channel = "12"
-        } else if (AppendMorse == n13) {
-            channel = "13"
-        } else if (AppendMorse == n14) {
-            channel = "14"
-        } else if (AppendMorse == n15) {
-            channel = "15"
-        } else if (AppendMorse == n16) {
-            channel = "16"
-        } else if (AppendMorse == n17) {
-            channel = "17"
-        } else if (AppendMorse == n18) {
-            channel = "18"
-        } else if (AppendMorse == n19) {
-            channel = "19"
-        } else if (AppendMorse == n20) {
-            channel = "20"
-        } else if (AppendMorse == n21) {
-            channel = "21"
-        } else if (AppendMorse == n22) {
-            channel = "22"
-        } else if (AppendMorse == n23) {
-            channel = "23"
-        } else if (AppendMorse == n24) {
-            channel = "24"
-        } else if (AppendMorse == n25) {
-            channel = "25"
-        } else if (AppendMorse == n26) {
-            channel = "26"
-        } else if (AppendMorse == n27) {
-            channel = "27"
-        } else if (AppendMorse == n28) {
-            channel = "28"
-        } else if (AppendMorse == n29) {
-            channel = "29"
-        } else if (AppendMorse == n30) {
-            channel = "30"
+        switch (AppendMorse) {
+            case n01: channel = "01"; break;
+            case n02: channel = "02"; break;
+            case n03: channel = "03"; break;
+            case n04: channel = "04"; break;
+            case n05: channel = "05"; break;
+            case n06: channel = "06"; break;
+            case n07: channel = "07"; break;
+            case n08: channel = "08"; break;
+            case n09: channel = "09"; break;
+            case n10: channel = "10"; break;
+            case n11: channel = "11"; break;
+            case n12: channel = "12"; break;
+            case n13: channel = "13"; break;
+            case n14: channel = "14"; break;
+            case n15: channel = "15"; break;
+            case n16: channel = "16"; break;
+            case n17: channel = "17"; break;
+            case n18: channel = "18"; break;
+            case n19: channel = "19"; break;
+            case n20: channel = "20"; break;
+            case n21: channel = "21"; break;
+            case n22: channel = "22"; break;
+            case n23: channel = "23"; break;
+            case n24: channel = "24"; break;
+            case n25: channel = "25"; break;
+            case n26: channel = "26"; break;
+            case n27: channel = "27"; break;
+            case n28: channel = "28"; break;
+            case n29: channel = "29"; break;
+            case n30: channel = "30"; break;
         }
         showString(channel)
     }
-    
-}   
+}
 
 function checkMark(repeat: number) {
     for (let i = 0; i < repeat; i++) {
