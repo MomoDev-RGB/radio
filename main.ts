@@ -133,11 +133,11 @@ enum PacketType {
     GAME_OVER = 40
 }
 
-let snake: number[] = [12] 
+let snake: number[] = [12]
 let direction = 1          // 0:U, 1:R, 2:D, 3:L
 let food = 0
 let gameActive = false
-let browserID = 0     
+let browserID = 0
 
 function moveSnake() {
     let head = snake[0]
@@ -277,7 +277,7 @@ input.onButtonPressed(Button.A, function () {
 })
 
 
-function showString (str: string) {
+function showString(str: string) {
     basic.showString(str)
     basic.clearScreen()
 }
@@ -405,9 +405,9 @@ function checkMark(repeat: number) {
         basic.pause(250)
         basic.clearScreen()
         basic.pause(250)
-        
+
     }
-    
+
 }
 
 function txSend() {
@@ -432,7 +432,7 @@ function txSend() {
         radio.setGroup(chRESPONSE)
         digit = ""
     }
-    
+
 }
 
 function parseEX(cmd: string) {
@@ -511,7 +511,7 @@ input.onButtonPressed(Button.AB, function () {
         txt = ""
         radio.setGroup(255)
     }
-    
+
     if (AppendMorse == TXGn) {
         MODE = "TXG"
         showString(MODE)
@@ -552,18 +552,18 @@ input.onGesture(Gesture.Shake, function () {
 })
 
 
-radio.onReceivedString(function(receivedString: string) {
+radio.onReceivedString(function (receivedString: string) {
     if (MODE == "RX") {
-        
+
         showString(receivedString)
     }
     if (MODE == "EX") {
-        
+
         parseEX(receivedString)
     }
 })
 
-radio.onReceivedNumber(function(receivedNumber: number){
+radio.onReceivedNumber(function (receivedNumber: number) {
     if (MODE == "TXE") {
         if (rTemp) {
             showString("TEMP IS " + receivedNumber.toString())
@@ -578,7 +578,7 @@ radio.onReceivedNumber(function(receivedNumber: number){
         }
         radio.setGroup(255)
     }
-    
+
 })
 
 
